@@ -21,7 +21,7 @@ def IterateAndResize(inputFolder, dryrun):
     count = count + 1
     fullpath = "%s/%s" % (inputFolder, fn)
     if os.path.isfile(fullpath):
-      if fullpath.endswith(".jpg"):
+      if fullpath.endswith(".jpg") or fullpath.endswith(".png"):
         size = os.path.getsize(fullpath)
         if size > MAXFILESIZE:
           converted = ConvertJPG(inputFolder, fn, dryrun)
