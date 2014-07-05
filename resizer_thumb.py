@@ -1,8 +1,7 @@
 import os
 import sys
 
-MAXFILESIZE_BIG = 10 * 1024 # 10KB
-MAXFILESIZE_SMALL = 8 * 1024 # 10KB
+MAXFILESIZE = 5 * 1024 # 5KB
 
 def IterateAndResize(inputFolder):
   spaceSaved = 0
@@ -17,14 +16,11 @@ def IterateAndResize(inputFolder):
     if os.path.isfile(fullpath):
       if fn.find(".") == -1:
         size = os.path.getsize(fullpath)
-        if fn.endswith("_s"):
-          pass
-        else:        
-          if size > MAXFILESIZE_BIG:
-            converted = ConvertThumb(inputFolder, fn)
-            spaceSaved = spaceSaved + converted
-          else:
-            print "Skip '%s/%s' (%.0fKB)" % (inputFolder, fn, size / 1024)
+        if size > MAXFILESIZE:
+          converted = ConvertThumb(inputFolder, fn)
+          spaceSaved = spaceSaved + converted
+        else:
+          print "Skip '%s/%s' (%.0fKB)" % (inputFolder, fn, size / 1024)
 
     if count % 10 == 0:
       print "(%d/%d)" % (count, total)
@@ -33,7 +29,8 @@ def IterateAndResize(inputFolder):
 def ConvertThumb(inputFolder, fn):
   fullpath = "%s/%s" % (inputFolder, fn)
   sizeBefore = os.path.getsize(fullpath)
-  os.system("mogrify -quality 80%% %s" % (fullpath))
+  os.system("convert %s %s.jpg" % (fullpath, fullpath))
+  os.system("mv %s.jpg %s")
   sizeAfter = os.path.getsize(fullpath)
 
   print "Convert '%s' File completed. (%.0fKB -> %.0fKB)" % (fullpath, sizeBefore / 1024, sizeAfter / 1024)
