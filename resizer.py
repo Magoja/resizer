@@ -28,7 +28,7 @@ def IterateAndResize(inputFolder, dryrun):
           spaceSaved = spaceSaved + converted
         else:
           print "Skip '%s/%s' (%.0fKB)" % (inputFolder, fn, size / 1024)
-      elif fullpath.endswith(".gif"):
+      elif fullpath.lower().endswith(".gif"):
         ConvertGIF(inputFolder, fn, dryrun)
 
     if count % 10 == 0:
